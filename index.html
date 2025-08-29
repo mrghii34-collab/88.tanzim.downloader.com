@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>App Download</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+  body { background: linear-gradient(135deg, #6a11cb, #2575fc); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+
+  .container { background: #fff; padding: 30px 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-width: 500px; width: 100%; text-align: center; }
+
+  h1 { font-size: 28px; color: #333; margin-bottom: 15px; }
+  .ad-box { margin-bottom: 20px; }
+  .instructions { background: #f8f9fa; padding: 20px; border-radius: 10px; color: #555; margin-bottom: 25px; line-height: 1.6; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
+  a.button { display: inline-block; padding: 15px 30px; font-size: 20px; color: #fff; background: #28a745; text-decoration: none; border-radius: 10px; transition: all 0.3s ease; }
+  a.button:hover { background: #218838; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+  .footer { margin-top: 15px; font-size: 14px; color: #888; }
+  .error { font-size: 24px; color: red; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="container" id="appContainer">
+  <!-- Ad Box -->
+  <div class="ad-box">
+    <script type="text/javascript">
+      atOptions = {
+        'key' : '0f97b88fb231c845b3ac10cb707338b6',
+        'format' : 'iframe',
+        'height' : 50,
+        'width' : 320,
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/0f97b88fb231c845b3ac10cb707338b6/invoke.js"></script>
+  </div>
+
+  <h1 id="appName">অ্যাপ নাম</h1>
+  <div class="instructions" id="instructions">অ্যাপ ব্যবহারের নির্দেশাবলী এখানে দেখাবে।</div>
+  <a id="downloadBtn" class="button" href="#" target="_blank">ডাউনলোড করুন</a>
+  <div class="footer">Powered by Tanzim Ahmed</div>
+</div>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCtDWs_Ft0e2NcU-dtwaWPfy-gAXa0azQg",
+    authDomain: "tanzim-main-admin-app.firebaseapp.com",
+    databaseURL: "https://tanzim-main-admin-app-default-rtdb.firebaseio.com",
+    projectId: "tanzim-main-admin-app",
+    storageBucket: "tanzim-main-admin-app.appspot.com",
+    messagingSenderId: "12436676722",
+    appId: "1:12436676722:web:f066ffbc343f0117eea2eb",
+    measurementId: "G-QKK68SK6BN"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  db.ref('appData').on('value', snapshot => {
+    const data = snapshot.val();
+    const container = document.getElementById('appContainer');
+
+    if(data) {
+      if(data.status === 'off') {
+        container.innerHTML = '<div class="error">❌ Error 404: ওয়েবসাইটটি বর্তমানে বন্ধ আছে</div>';
+      } else {
+        document.getElementById('appName').innerText = data.name || 'অ্যাপ নাম';
+        document.getElementById('instructions').innerText = data.instructions || 'অ্যাপ ব্যবহারের নির্দেশাবলী';
+        document.getElementById('downloadBtn').href = data.downloadLink || '#';
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
